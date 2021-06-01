@@ -20,7 +20,7 @@ for image_path in images:
     images_list.append(image)
     counter += 1
 
-# print(images_list)
+print(images_list)
 
 prev_time = 0
 
@@ -29,10 +29,14 @@ detector = HandTrack.handsDetector(detection_con=0.8)
 
 finger_tips = [4, 8, 12, 16, 20]
 
+finger_counter = 0
+
 while True:
     is_true, frame = capture.read()
     frame = detector.detect_hands(frame)
     hand_landmarks = detector.find_position(frame, draw=False)
+
+    finger_counter = 0
 
     if hand_landmarks:
         # print(hand_landmarks)
@@ -109,10 +113,36 @@ while True:
                     fingers.append(0)
 
         if fingers:
-            print(fingers)
+            # print(fingers)
+            for i in fingers:
+                finger_counter += 1
 
-    image_height, image_width, image_channels = images_list[0].shape
-    frame[0:image_height, 0:image_width] = images_list[0]
+        if finger_counter == 1:
+            image_height, image_width, image_channels = images_list[0].shape
+            frame[0:image_height, 0:image_width] = images_list[0]
+
+        elif finger_counter == 2:
+            image_height, image_width, image_channels = images_list[4].shape
+            frame[0:image_height, 0:image_width] = images_list[4]
+
+        elif finger_counter == 3:
+            image_height, image_width, image_channels = images_list[5].shape
+            frame[0:image_height, 0:image_width] = images_list[5]
+
+        elif finger_counter == 4:
+            image_height, image_width, image_channels = images_list[2].shape
+            frame[0:image_height, 0:image_width] = images_list[2]
+
+        elif finger_counter == 5:
+            image_height, image_width, image_channels = images_list[3].shape
+            frame[0:image_height, 0:image_width] = images_list[3]
+
+        else:
+            image_height, image_width, image_channels = images_list[1].shape
+            frame[0:image_height, 0:image_width] = images_list[1]
+        
+    cv.putText(frame, f'Fingers: {str(finger_counter)}', (300, 800), cv.FONT_HERSHEY_SIMPLEX,
+                   1, (255, 0, 0), 3)
 
     curr_time = time.time()
     fps = 1 / (curr_time - prev_time)
