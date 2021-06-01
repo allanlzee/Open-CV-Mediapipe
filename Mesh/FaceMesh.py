@@ -22,7 +22,7 @@ while True:
             mpDraw.draw_landmarks(frame, face_mark, mpFaceMesh.FACE_CONNECTIONS,
                                  drawSpecs, drawSpecs)
 
-            for id, landmark in face_mark.landmark:
+            for id, landmark in enumerate(face_mark.landmark):
 
                 # Conversion to pixels
                 height, width, channels = frame.shape
