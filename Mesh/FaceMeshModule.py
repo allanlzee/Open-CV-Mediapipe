@@ -45,7 +45,7 @@ class FaceMeshDetector():
                     face_values.append([id, pos_x, pos_y])
             faces.append(face_values)
 
-        return frame, face_values
+        return frame, faces
 
 
 def main():

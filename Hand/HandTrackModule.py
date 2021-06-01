@@ -15,7 +15,7 @@ class handsDetector():
                                         self.detectionCon, self.trackCon)
         self.mpDrawLine = mp.solutions.drawing_utils
 
-    def detectHands(self, frame, draw=True):
+    def detect_hands(self, frame, draw=True):
         rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
 
         self.results = self.hands.process(rgb_frame)
@@ -39,7 +39,7 @@ class handsDetector():
 
         return frame
 
-    def findPosition(self, frame, hand_mark=0, draw=True):
+    def find_position(self, frame, hand_mark=0, draw=True):
 
         lmList = []
 
@@ -55,7 +55,7 @@ class handsDetector():
 
                 if draw:
                     # print(id, pos_x, pos_y)
-                    cv.circle(frame, (pos_x, pos_y), 15, (0, 0, 255), cv.FILLED)
+                    cv.circle(frame, (pos_x, pos_y), 10, (0, 0, 255), cv.FILLED)
 
         return lmList
 
@@ -71,17 +71,17 @@ def main():
     while True:
         is_true, frame = capture.read()
 
-        frame = detector.detectHands(frame)
+        frame = detector.detect_hands(frame)
         # detector.detectHands(frame, draw=False) -> Prevents Drawing of Lines
 
-        lmList = detector.findPosition(frame)
+        lmList = detector.find_position(frame)
         # detector.findPosition(frame, draw = False) -> Prevents Drawing of Landmarks
 
         if len(lmList) != 0:
-            print(lmList[4])  # Base of Hand (wrist)
+            print(lmList[0])  # Base of Hand (wrist)
             # This will make sure the console only prints the specified landmark
 
-        landmarks = detector.findPosition(frame)
+        landmarks = detector.find_position(frame)
         # landmarks = detector.findPosition(frame, draw=False) -> Prevents Drawing of Hand Marks
 
         curr_time = time.time()
