@@ -53,8 +53,9 @@ while True:
 
         # Hand's Orientation is Normal
         if pos_wrist_y - 100 > hand_landmarks[12][2]:
+            print("Normal")
             # Special Case for the Thumb
-            if hand_landmarks[finger_tips[0]][1] < hand_landmarks[finger_tips[0] - 1][1]:
+            if hand_landmarks[finger_tips[0]][1] - 30 <= hand_landmarks[finger_tips[0] - 1][1]:
                 fingers.append(1)
             else:
                 fingers.append(0)
@@ -69,8 +70,9 @@ while True:
 
         # Hand's Orientation is Upside Down
         elif pos_wrist_y + 100 < hand_landmarks[12][2]:
+            print("Upside Down")
             # Special case for the thumb
-            if hand_landmarks[finger_tips[0]][1] < hand_landmarks[finger_tips[0] - 1][1]:
+            if hand_landmarks[finger_tips[0]][1] - 30 <= hand_landmarks[finger_tips[0] - 1][1]:
                 fingers.append(1)
             else:
 
@@ -84,8 +86,8 @@ while True:
 
         # If fingers point to the left
         elif pos_wrist_x + 100 < hand_landmarks[12][1]:
-
-            if hand_landmarks[finger_tips[0]][2] < hand_landmarks[finger_tips[0] - 1][2]:
+            print("Left")
+            if hand_landmarks[finger_tips[0]][2] - 15 <= hand_landmarks[finger_tips[0] - 1][2]:
                 fingers.append(1)
             else:
                 fingers.append(0)
@@ -99,8 +101,9 @@ while True:
 
         # If the fingers point to the right
         elif pos_wrist_x - 100 > hand_landmarks[12][1]:
+            print("Right")
 
-            if hand_landmarks[finger_tips[0]][2] < hand_landmarks[finger_tips[0] - 1][2]:
+            if hand_landmarks[finger_tips[0]][2] + 15 >= hand_landmarks[finger_tips[0] - 1][2]:
                 fingers.append(1)
             else:
                 fingers.append(0)
