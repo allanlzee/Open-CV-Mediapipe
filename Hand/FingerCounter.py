@@ -143,9 +143,10 @@ while True:
         else:
             image_height, image_width, image_channels = images_list[5].shape
             frame[0:image_height, 0:image_width] = images_list[5]
-        
-    cv.putText(frame, f'Fingers: {str(finger_counter)}', (frame_width + 100, 150), cv.FONT_HERSHEY_SIMPLEX,
-                   1, (255, 0, 0), 3)
+
+    cv.rectangle(frame, (20, 300), (170, 450), (0, 255,  0), -1)
+    cv.putText(frame, f'{str(finger_counter)}', (60, 400), cv.FONT_HERSHEY_COMPLEX,
+                   3, (255, 0, 0), 3)
 
     curr_time = time.time()
     fps = 1 / (curr_time - prev_time)
