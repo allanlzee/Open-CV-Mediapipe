@@ -55,7 +55,7 @@ while True:
         if pos_wrist_y - 100 > hand_landmarks[12][2]:
             print("Normal")
             # Special Case for the Thumb
-            if hand_landmarks[finger_tips[0]][1] - 30 <= hand_landmarks[finger_tips[0] - 1][1]:
+            if hand_landmarks[finger_tips[0]][1] - 15 <= hand_landmarks[finger_tips[0] - 1][1]:
                 fingers.append(1)
             else:
                 fingers.append(0)
@@ -72,7 +72,7 @@ while True:
         elif pos_wrist_y + 100 < hand_landmarks[12][2]:
             print("Upside Down")
             # Special case for the thumb
-            if hand_landmarks[finger_tips[0]][1] - 30 <= hand_landmarks[finger_tips[0] - 1][1]:
+            if hand_landmarks[finger_tips[0]][1] - 15 <= hand_landmarks[finger_tips[0] - 1][1]:
                 fingers.append(1)
             else:
 
@@ -115,7 +115,7 @@ while True:
                 else:
                     fingers.append(0)
 
-        if fingers:
+        if len(fingers) > 0:
             print(fingers)
             for i in fingers:
                 finger_counter += i
