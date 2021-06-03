@@ -48,8 +48,11 @@ while True:
         # print(hand_landmarks[0])
         pos_wrist_x = hand_landmarks[0][1]
         pos_wrist_y = hand_landmarks[0][2]
+        pos_wrist_x1 = hand_landmarks[1][1]
+        pos_wrist_y1 = hand_landmarks[1][2]
 
         fingers = []
+        fingers_2 = []
 
         # Hand's Orientation is Normal
         if pos_wrist_y - 100 > hand_landmarks[12][2]:

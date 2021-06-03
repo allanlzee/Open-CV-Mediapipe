@@ -39,7 +39,7 @@ class handsDetector():
 
         return frame
 
-    def find_position(self, frame, hand_mark=0, draw=True):
+    def find_position(self, frame, hand_mark=0, draw=True, color=(0, 0, 255)):
 
         lmList = []
 
@@ -55,7 +55,7 @@ class handsDetector():
 
                 if draw:
                     # print(id, pos_x, pos_y)
-                    cv.circle(frame, (pos_x, pos_y), 10, (0, 0, 255), cv.FILLED)
+                    cv.circle(frame, (pos_x, pos_y), 10, color, cv.FILLED)
 
         return lmList
 
@@ -113,30 +113,30 @@ if __name__ == "__main__":
 
 """ 
 capture = cv.VideoCapture(0)
-    # Frame Rates
-    prev_time = 0
-    curr_time = 0 
-    detector = handsDetector() # Use default parameters
-    while True:
-        isTrue, frame = capture.read()
-        frame = detector.detectHands(frame)
-        lmList = detector.findPosition(frame)
-        if len(lmList) != 0: 
-            print(lmList[4]) # Base of Hand (wrist)
-            # This will make sure the console only prints where '0' 
-            # or whatever hand landmark is specified
-        landmarks = detector.findPosition(frame)
-        curr_time = time.time() 
-        fps = 1 / (curr_time - prev_time)
-        prev_time = curr_time
-        cv.putText(frame, str(int(fps)), (10, 70), cv.FONT_HERSHEY_COMPLEX,
+# Frame Rates
+prev_time = 0
+curr_time = 0 
+detector = handsDetector() # Use default parameters
+while True:
+    isTrue, frame = capture.read()
+    frame = detector.detectHands(frame)
+    lmList = detector.findPosition(frame)
+    if len(lmList) != 0: 
+        print(lmList[4]) # Base of Hand (wrist)
+        # This will make sure the console only prints where '0' 
+        # or whatever hand landmark is specified
+    landmarks = detector.findPosition(frame)
+    curr_time = time.time() 
+    fps = 1 / (curr_time - prev_time)
+    prev_time = curr_time
+    cv.putText(frame, str(int(fps)), (10, 70), cv.FONT_HERSHEY_COMPLEX,
             2, (0, 255, 0), 2)
-        cv.imshow("Video Capture", frame)
+    cv.imshow("Video Capture", frame)
 
-        # Press d to stop the program
-        if cv.waitKey(20) & 0xFF == ord('d'):
-            break 
+    # Press d to stop the program
+    if cv.waitKey(20) & 0xFF == ord('d'):
+        break 
 
-    capture.release()
-    cv.destroyAllWindows() 
+capture.release()
+cv.destroyAllWindows() 
 """
