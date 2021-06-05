@@ -59,19 +59,23 @@ class HandsDetector():
 
         return lmList
 
-    def fingers_up(self, frame, hand_landmarks):
+    def fingers_up(self, frame, hand_landmarks, flipped=False):
         fingers = [0, 0, 0, 0, 0]
         finger_tips = [4, 8, 12, 16, 20]
 
         # Thumb
-        if hand_landmarks[finger_tips[0]][1] > hand_landmarks[finger_tips[0] - 1][1]:
-            fingers[0] = 1
+        if flipped:
+            if hand_landmarks[finger_tips[0]][1] < hand_landmarks[finger_tips[0] - 1][1]:
+                fingers[0] = 1
+        else:
+            if hand_landmarks[finger_tips[0]][1] > hand_landmarks[finger_tips[0] - 1][1]:
+                fingers[0] = 1
 
         for i in range(1, 5):
             if hand_landmarks[finger_tips[i]][2] < hand_landmarks[finger_tips[i] - 2][2]:
                 fingers[i] = 1
 
-        print(fingers)
+        return fingers
 
 
 def main():
