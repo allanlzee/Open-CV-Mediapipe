@@ -25,7 +25,7 @@ print(images_list)
 prev_time = 0
 
 # Use hand tracking module
-detector = HandTrack.handsDetector(detection_con=0.8)
+detector = HandTrack.HandsDetector(detection_con=0.8)
 
 finger_tips = [4, 8, 12, 16, 20]
 

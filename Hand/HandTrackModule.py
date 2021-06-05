@@ -3,7 +3,7 @@ import mediapipe as mp
 import time
 
 
-class handsDetector():
+class HandsDetector():
     def __init__(self, mode=False, max_hands=2, detection_con=0.5, track_con=0.5):
         self.mode = mode
         self.maxHands = max_hands
@@ -59,6 +59,20 @@ class handsDetector():
 
         return lmList
 
+    def fingers_up(self, frame, hand_landmarks):
+        fingers = [0, 0, 0, 0, 0]
+        finger_tips = [4, 8, 12, 16, 20]
+
+        # Thumb
+        if hand_landmarks[finger_tips[0]][1] > hand_landmarks[finger_tips[0] - 1][1]:
+            fingers[0] = 1
+
+        for i in range(1, 5):
+            if hand_landmarks[finger_tips[i]][2] < hand_landmarks[finger_tips[i] - 2][2]:
+                fingers[i] = 1
+
+        print(fingers)
+
 
 def main():
     capture = cv.VideoCapture(0)
@@ -66,7 +80,7 @@ def main():
     prev_time = 0
     curr_time = 0
 
-    detector = handsDetector()  # Use default parameters
+    detector = HandsDetector()  # Use default parameters
 
     while True:
         is_true, frame = capture.read()
@@ -74,12 +88,12 @@ def main():
         frame = detector.detect_hands(frame)
         # detector.detectHands(frame, draw=False) -> Prevents Drawing of Lines
 
-        lmList = detector.find_position(frame)
-        # detector.findPosition(frame, draw = False) -> Prevents Drawing of Landmarks
+        lmList = detector.find_position(frame, draw=False)
 
         if len(lmList) != 0:
-            print(lmList[0])  # Base of Hand (wrist)
+            # print(lmList[0])  # Base of Hand (wrist)
             # This will make sure the console only prints the specified landmark
+            detector.fingers_up(frame, lmList)
 
         landmarks = detector.find_position(frame)
         # landmarks = detector.findPosition(frame, draw=False) -> Prevents Drawing of Hand Marks

@@ -7,7 +7,7 @@ capture = cv.VideoCapture(0)
 # Frame Rates
 prev_time = 0
 curr_time = 0
-detector = HandTrackModule.handsDetector() # Use default parameters
+detector = HandTrackModule.HandsDetector() # Use default parameters
 while True:
     isTrue, frame = capture.read()
     frame = detector.detect_hands(frame)
