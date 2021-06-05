@@ -31,6 +31,10 @@ orange = images_list[1]
 purple = images_list[3]
 black = images_list[2]
 
+# Booleans to track drawing and selecting modes
+drawing = False
+selecting = False
+
 capture = cv.VideoCapture(0)
 capture.set(3, 1227)
 capture.set(4, 720)
@@ -81,6 +85,11 @@ while True:
 
         # Check for finger positions
         if fingers_up[1] and fingers_up[2]:
+            selecting = True
+            drawing = False
+
+            # Reset Drawing Positions
+            pos_x, pos_y = 0, 0
             # Selection Mode (two fingers are up)
             # print("Selection Mode")
             # Draw Line Between Fingers
@@ -116,13 +125,15 @@ while True:
                 # Black
                 elif index_x < 1060 and middle_x < index_x + length:
                     header_color[6] = True
-                    draw_color = (0, 0, 0)
+                    draw_color = (255, 255, 255)
                 # Eraser
                 else:
                     header_color[0] = True
                     draw_color = (0, 0, 0)
 
         elif fingers_up[1]:
+            selecting = False
+            drawing = True
             # Drawing Mode (index finger up only)
             print("Drawing Mode")
             # Draw Circle on the Index Finger Tip
@@ -132,19 +143,28 @@ while True:
                 pos_x, pos_y = index_x, index_y
 
             if draw_color == (0, 0, 0):
-                cv.line(frame, (pos_x, pos_y), (index_x, index_y), draw_color, eraser_thickness)
+                # cv.line(frame, (pos_x, pos_y), (index_x, index_y), draw_color, eraser_thickness)
                 cv.line(canvas, (pos_x, pos_y), (index_x, index_y), draw_color, eraser_thickness)
             else:
-                cv.line(frame, (pos_x, pos_y), (index_x, index_y), draw_color, brush_thickness)
+                # cv.line(frame, (pos_x, pos_y), (index_x, index_y), draw_color, brush_thickness)
                 cv.line(canvas, (pos_x, pos_y), (index_x, index_y), draw_color, brush_thickness)
 
-            pos_x, pos_y = index_x, index_y
+            if len(hand_landmarks) > 0 and drawing == True:
+                pos_x, pos_y = index_x, index_y
 
         else:
             print("Nothing Selected")
 
+    gray = cv.cvtColor(canvas, cv.COLOR_BGR2GRAY)
+    _, inverse = cv.threshold(gray, 50, 255, cv.THRESH_BINARY_INV)
+    inverse = cv.cvtColor(inverse, cv.COLOR_GRAY2BGR)
+    frame = cv.bitwise_and(frame, inverse)
+    frame = cv.bitwise_or(frame, canvas)
+
+    # frame = cv.addWeighted(frame, 0.5, canvas, 0.5, 0)
+
     cv.imshow("Virtual Artist", frame)
-    cv.imshow("Draw Pad", canvas)
+    # cv.imshow("Draw Pad", canvas)
 
     if cv.waitKey(1) & 0xFF == ord('d'):
         break
