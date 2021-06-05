@@ -42,17 +42,22 @@ while True:
         index_x, index_y = hand_landmarks[8][1], hand_landmarks[8][2]
         middle_x, middle_y = hand_landmarks[12][1], hand_landmarks[12][2]
 
+        # Draw Circles on the Finger Tips
+        cv.circle(frame, (index_x, index_y), 8, (255, 255, 0), -1)
+        cv.circle(frame, (middle_x, middle_y), 8, (255, 255, 0), -1)
+
         fingers_up = detector.fingers_up(frame, hand_landmarks, flipped=True)
+        print(fingers_up)
 
         # Check for finger positions
         if fingers_up[1] and fingers_up[2]:
             # Selection Mode (two fingers are up)
-            pass
+            print("Selection Mode")
         elif fingers_up[1]:
             # Drawing Mode (index finger up only)
-            pass
+            print("Drawing Mode")
         else:
-            pass
+            print("Nothing Selected")
 
     cv.imshow("Virtual Artist", frame)
 
